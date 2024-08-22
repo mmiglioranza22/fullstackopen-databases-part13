@@ -35,6 +35,10 @@ Note.init(
 
 Note.sync(); // CREATE TABLE IF NOT EXISTS...
 
+// app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.get("/api/notes", async (req, res) => {
   // const notes = await sequelize.query("SELECT * FROM notes", {
   // 	type: QueryTypes.SELECT,
