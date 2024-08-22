@@ -33,14 +33,37 @@ Note.init(
   }
 );
 
+Note.sync(); // CREATE TABLE IF NOT EXISTS...
+
 app.get("/api/notes", async (req, res) => {
   // const notes = await sequelize.query("SELECT * FROM notes", {
   // 	type: QueryTypes.SELECT,
   // });
   const notes = await Note.findAll();
-
+  console.log(notes.map((n) => n.toJSON()));
   res.json(notes);
 });
+
+app.get("/api/notes/:id", async (req, res) => {
+  const note = await Note.findByPk(req.params.id);
+  if (note) {
+    res.json(note);
+  } else {
+    res.status(404).end();
+  }
+});
+
+app.put("/api/notes/:id", async (req, res) => {
+  const note = await Note.findByPk(req.params.id);
+  if (note) {
+    note.important = req.body.important;
+    await note.save();
+    res.json(note);
+  } else {
+    res.status(404).end();
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
