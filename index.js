@@ -10,6 +10,7 @@ const { connectToDatabase } = require("./util/db");
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
+const authorsRouter = require("./controllers/authors");
 
 app.use(express.json());
 
@@ -40,6 +41,7 @@ const validateUserToken = (req, res, next) => {
 app.use(checkExistingToken);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/authors", authorsRouter);
 app.use("/api/blogs", validateUserToken, blogsRouter);
 
 app.use((err, req, res, next) => {
